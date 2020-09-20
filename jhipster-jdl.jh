@@ -1,0 +1,13 @@
+entity Path{
+    name String
+    path String
+}
+
+entity Extension{
+	name String
+}
+
+paginate Path, Extension with pagination
+
+// Set an angular suffix
+// angularSuffix * with mySuffix

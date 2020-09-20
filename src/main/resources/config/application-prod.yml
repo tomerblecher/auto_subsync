@@ -38,18 +38,28 @@ spring:
       enabled: false
     livereload:
       enabled: false
+  datasource:
+    type: com.zaxxer.hikari.HikariDataSource
+    url: jdbc:mysql://localhost:3306/subtitle_sync?useUnicode=true&characterEncoding=utf8&useSSL=false&useLegacyDatetimeCode=false&serverTimezone=UTC&createDatabaseIfNotExist=true
+    username: root
+    password:
+    hikari:
+      poolName: Hikari
+      auto-commit: false
+      data-source-properties:
+        cachePrepStmts: true
+        prepStmtCacheSize: 250
+        prepStmtCacheSqlLimit: 2048
+        useServerPrepStmts: true
+  jpa:
+    show-sql: false
   # Replace by 'prod, faker' to add the faker context and have sample data loaded in production
   liquibase:
     contexts: prod
-    url: jdbc:mysql://localhost:3306/subtitle_sync?useUnicode=true&characterEncoding=utf8&useSSL=false&useLegacyDatetimeCode=false&serverTimezone=UTC&createDatabaseIfNotExist=true
   mail:
     host: localhost
     port: 25
     username:
-    password:
-  r2dbc:
-    url: r2dbc:mysql://localhost:3306/subtitle_sync?useUnicode=true&characterEncoding=utf8&useSSL=false&useLegacyDatetimeCode=false&serverTimezone=UTC&createDatabaseIfNotExist=true
-    username: root
     password:
   thymeleaf:
     cache: true
@@ -99,6 +109,10 @@ jhipster:
   http:
     cache: # Used by the CachingHttpHeadersFilter
       timeToLiveInDays: 1461
+  cache: # Cache configuration
+    ehcache: # Ehcache configuration
+      time-to-live-seconds: 3600 # By default objects stay 1 hour in the cache
+      max-entries: 1000 # Number of objects in each cache entry
   security:
     authentication:
       jwt:
@@ -107,7 +121,7 @@ jhipster:
         # - In the JHipster Registry (which includes a Spring Cloud Config server)
         # - In a separate `application-prod.yml` file, in the same folder as your executable JAR file
         # - In the `JHIPSTER_SECURITY_AUTHENTICATION_JWT_BASE64_SECRET` environment variable
-        base64-secret: ODZhYzhiN2Q4MDcyZDViMzE4ZDYzOThhMjQyZGQzM2FiMTI4Y2M5MTQ2ZDM3M2ZjNzM5ZGExMDQwOTA4NzYyOGVkNDU1Y2I3OTczYjBjYWI5MzUzNTdkNDBiODYzYTkwZDY1MjQ4Y2QxODYzZDU3ZjBhNzk3NTAyYjhiNmQzNzI=
+        base64-secret: NjZhYjk5YjhlMjUyNTZhYTk3Nzg2YzVjNmQ4MjI3MGQ3MjU4OGE3Zjc4OGM3YWVmYjFlOTY0M2M1N2Q4YTZmN2ZiNzIwYmZiODY0NGVhMGM2NzY4MjYwMjUwMjFkOWI3NWNhZTA5ZjNlNzM2NTVhM2UxNDUwZDYyOWJkYjcyZjc=
         # Token is valid 24 hours
         token-validity-in-seconds: 86400
         token-validity-in-seconds-for-remember-me: 2592000

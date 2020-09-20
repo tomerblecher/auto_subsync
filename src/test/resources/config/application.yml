@@ -21,24 +21,47 @@ eureka:
     instanceId: subtitle_sync:${spring.application.instance-id:${random.value}}
 
 spring:
+  profiles:
+  # Uncomment the following line to enable tests against production database type rather than H2, using Testcontainers
+  #active: testcontainers
   application:
     name: subtitle_sync
+  datasource:
+    type: com.zaxxer.hikari.HikariDataSource
+    url: jdbc:h2:mem:subtitle_sync;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE
+    name:
+    username:
+    password:
+    hikari:
+      auto-commit: false
   jackson:
     serialization:
       write-durations-as-timestamps: false
+  jpa:
+    database-platform: io.github.jhipster.domain.util.FixedH2Dialect
+    open-in-view: false
+    show-sql: false
+    hibernate:
+      ddl-auto: none
+      naming:
+        physical-strategy: org.springframework.boot.orm.jpa.hibernate.SpringPhysicalNamingStrategy
+        implicit-strategy: org.springframework.boot.orm.jpa.hibernate.SpringImplicitNamingStrategy
+    properties:
+      hibernate.id.new_generator_mappings: true
+      hibernate.connection.provider_disables_autocommit: true
+      hibernate.cache.use_second_level_cache: false
+      hibernate.cache.use_query_cache: false
+      hibernate.generate_statistics: false
+      hibernate.hbm2ddl.auto: validate
+      hibernate.jdbc.time_zone: UTC
   liquibase:
     contexts: test
-    url: jdbc:h2:mem:subtitle_sync;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE
   mail:
     host: localhost
   main:
     allow-bean-definition-overriding: true
   messages:
     basename: i18n/messages
-  r2dbc:
-    url: r2dbc:h2:mem:///subtitle_sync?options=DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE
-    username: r2dbc
-    password:
   task:
     execution:
       thread-name-prefix: subtitle-sync-task-
@@ -81,7 +104,7 @@ jhipster:
     authentication:
       jwt:
         # This token must be encoded using Base64 (you can type `echo 'secret-key'|base64` on your command line)
-        base64-secret: ODZhYzhiN2Q4MDcyZDViMzE4ZDYzOThhMjQyZGQzM2FiMTI4Y2M5MTQ2ZDM3M2ZjNzM5ZGExMDQwOTA4NzYyOGVkNDU1Y2I3OTczYjBjYWI5MzUzNTdkNDBiODYzYTkwZDY1MjQ4Y2QxODYzZDU3ZjBhNzk3NTAyYjhiNmQzNzI=
+        base64-secret: NjZhYjk5YjhlMjUyNTZhYTk3Nzg2YzVjNmQ4MjI3MGQ3MjU4OGE3Zjc4OGM3YWVmYjFlOTY0M2M1N2Q4YTZmN2ZiNzIwYmZiODY0NGVhMGM2NzY4MjYwMjUwMjFkOWI3NWNhZTA5ZjNlNzM2NTVhM2UxNDUwZDYyOWJkYjcyZjc=
         # Token is valid 24 hours
         token-validity-in-seconds: 86400
   metrics:
